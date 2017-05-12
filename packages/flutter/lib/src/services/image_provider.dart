@@ -143,8 +143,9 @@ class ImageConfiguration {
 ///
 /// The type argument `T` is the type of the object used to represent a resolved
 /// configuration. This is also the type used for the key in the image cache. It
-/// should be immutable and implement [operator ==] and [hashCode]. Subclasses should
-/// subclass a variant of [ImageProvider] with an explicit `T` type argument.
+/// should be immutable and implement the [==] operator and the [hashCode]
+/// getter. Subclasses should subclass a variant of [ImageProvider] with an
+/// explicit `T` type argument.
 ///
 /// The type argument does not have to be specified when using the type as an
 /// argument (where any image provider is acceptable).
@@ -197,7 +198,7 @@ abstract class ImageProvider<T> {
   /// method will fetch. Different [ImageProvider]s given the same constructor
   /// arguments and [ImageConfiguration] objects should return keys that are
   /// '==' to each other (possibly by using a class for the key that itself
-  /// implements [operator ==]).
+  /// implements [==]).
   @protected
   Future<T> obtainKey(ImageConfiguration configuration);
 
@@ -222,7 +223,9 @@ class AssetBundleImageKey {
     @required this.bundle,
     @required this.name,
     @required this.scale
-  });
+  }) : assert(bundle != null),
+       assert(name != null),
+       assert(scale != null);
 
   /// The bundle from which the image will be obtained.
   ///
@@ -311,7 +314,9 @@ class NetworkImage extends ImageProvider<NetworkImage> {
   /// Creates an object that fetches the image at the given URL.
   ///
   /// The arguments must not be null.
-  const NetworkImage(this.url, { this.scale: 1.0 }) : assert(url != null);
+  const NetworkImage(this.url, { this.scale: 1.0 })
+      : assert(url != null),
+        assert(scale != null);
 
   /// The URL from which the image will be fetched.
   final String url;
@@ -381,7 +386,9 @@ class FileImage extends ImageProvider<FileImage> {
   /// Creates an object that decodes a [File] as an image.
   ///
   /// The arguments must not be null.
-  const FileImage(this.file, { this.scale: 1.0 });
+  const FileImage(this.file, { this.scale: 1.0 })
+      : assert(file != null),
+        assert(scale != null);
 
   /// The file to decode into an image.
   final File file;
@@ -443,7 +450,9 @@ class MemoryImage extends ImageProvider<MemoryImage> {
   /// Creates an object that decodes a [Uint8List] buffer as an image.
   ///
   /// The arguments must not be null.
-  const MemoryImage(this.bytes, { this.scale: 1.0 });
+  const MemoryImage(this.bytes, { this.scale: 1.0 })
+      : assert(bytes != null),
+        assert(scale != null);
 
   /// The bytes to decode into an image.
   final Uint8List bytes;
@@ -503,13 +512,11 @@ class ExactAssetImage extends AssetBundleImageProvider {
   /// defaults to 1.0. The [bundle] argument may be null, in which case the
   /// bundle provided in the [ImageConfiguration] passed to the [resolve] call
   /// will be used instead.
-  ExactAssetImage(this.name, {
+  const ExactAssetImage(this.name, {
     this.scale: 1.0,
     this.bundle
-  }) {
-    assert(name != null);
-    assert(scale != null);
-  }
+  }) : assert(name != null),
+       assert(scale != null);
 
   /// The key to use to obtain the resource from the [bundle]. This is the
   /// argument passed to [AssetBundle.load].

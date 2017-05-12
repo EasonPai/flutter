@@ -297,7 +297,7 @@ class RenderStack extends RenderBox
   /// top left corners.
   RenderStack({
     List<RenderBox> children,
-    FractionalOffset alignment: FractionalOffset.center,
+    FractionalOffset alignment: FractionalOffset.topLeft,
     StackFit fit: StackFit.loose,
     Overflow overflow: Overflow.clip
   }) : _alignment = alignment,
@@ -526,8 +526,9 @@ class RenderStack extends RenderBox
   @override
   void debugFillDescription(List<String> description) {
     super.debugFillDescription(description);
-    description.add('overflow: $overflow');
     description.add('alignment: $alignment');
+    description.add('fit: $fit');
+    description.add('overflow: $overflow');
   }
 }
 
